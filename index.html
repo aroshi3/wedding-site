@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aroshi & Nab — Nepal 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --snow: #f0f2f4;
+    --mist: #dde3eb;
+    --slate: #8fa0b3;
+    --stone: #4a5c6e;
+    --deep-blue: #1e2d3d;
+    --midnight: #111820;
+    --glacier: #a8c4d4;
+    --accent: #7ba3b8;
+    --warm-accent: #b8745a;
+    --body-bg: #f4f6f8;
+    --text-body: #2c3a46;
+    --text-light: #6a7f8f;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--body-bg);
+    color: var(--text-body);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 3rem;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(244,246,248,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(74,92,110,0.1);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 300; letter-spacing: 0.18em;
+    color: #fff; text-decoration: none; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo { color: var(--deep-blue); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.67rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.72); text-decoration: none; transition: color 0.3s;
+  }
+  nav.scrolled .nav-links a { color: var(--stone); }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    height: 100vh; position: relative;
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    overflow: hidden;
+  }
+  .hero-bg-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: center 55%;
+    display: block;
+    animation: heroZoom 20s ease-out forwards;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.07); }
+    to   { transform: scale(1.0); }
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(17,24,32,0.94) 0%, rgba(17,24,32,0.52) 28%, rgba(17,24,32,0.08) 62%, transparent 100%),
+      linear-gradient(to right, rgba(17,24,32,0.58) 0%, rgba(17,24,32,0.12) 52%, transparent 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4.5rem 4.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.6rem; letter-spacing: 0.5em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-bottom: 1rem;
+    animation: fadeUp 1.4s 0.2s ease both;
+  }
+  .hero-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.6rem, 7vw, 7.5rem);
+    font-weight: 300; line-height: 0.96; color: #fff;
+    white-space: nowrap;
+    animation: fadeUp 1.4s 0.4s ease both;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.3);
+  }
+  .hero-names em { font-style: italic; color: rgba(255,255,255,0.52); }
+  .hero-meta {
+    display: flex; align-items: center; gap: 2rem;
+    margin-top: 2rem;
+    animation: fadeUp 1.4s 0.65s ease both;
+  }
+  .hero-meta-divider { width: 1px; height: 1.8rem; background: rgba(255,255,255,0.2); }
+  .hero-meta-label { font-size: 0.56rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.25rem; }
+  .hero-meta-value { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 300; color: rgba(255,255,255,0.86); font-style: italic; }
+  .hero-credit {
+    position: absolute; bottom: 1.6rem; right: 2rem; z-index: 3;
+    font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+    animation: fadeUp 1s 1.6s ease both;
+  }
+  .scroll-hint span { font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.35), transparent); animation: scrollPulse 2.4s infinite; }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--midnight);
+    padding: 5rem 5rem;
+  }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .about-img {
+    width: 100%; aspect-ratio: 4/5;
+    object-fit: cover; object-position: center top;
+    display: block;
+    border-radius: 24px;
+  }
+  .about-content {
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .about-eyebrow {
+    font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+    color: rgba(168,196,212,0.5); display: block;
+  }
+  .about-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300; color: #fff; line-height: 1.08;
+  }
+  .about-heading em { font-style: italic; color: rgba(168,196,212,0.65); }
+  .about-rule { width: 28px; height: 1px; background: rgba(255,255,255,0.14); }
+  .about-body {
+    font-size: 0.88rem; line-height: 1.92;
+    color: rgba(255,255,255,0.46);
+  }
+  .about-callout {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 1.5rem; margin-top: 0.3rem;
+  }
+  .about-callout p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.18rem; font-weight: 300; font-style: italic;
+    color: #fff; line-height: 1.65;
+  }
+
+  /* ── DETAILS + CEREMONIES ── */
+  #savedate {
+    background: var(--midnight);
+    padding: 6rem 5rem 5rem;
+  }
+
+  /* Centred header */
+  .savedate-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .savedate-eyebrow {
+    font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+    color: rgba(168,196,212,0.5); display: block; margin-bottom: 0.9rem;
+  }
+  .savedate-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 300; color: #fff; line-height: 1.05; margin-bottom: 1.8rem;
+  }
+  .savedate-heading em { font-style: italic; color: rgba(168,196,212,0.65); }
+  .savedate-meta {
+    display: inline-flex; align-items: center; gap: 2rem;
+  }
+  .savedate-meta-item { text-align: center; }
+  .savedate-meta-label {
+    font-size: 0.54rem; letter-spacing: 0.32em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28); display: block; margin-bottom: 0.3rem;
+  }
+  .savedate-meta-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 300; color: rgba(255,255,255,0.82); font-style: italic;
+  }
+  .savedate-meta-div { width: 1px; height: 2.2rem; background: rgba(255,255,255,0.12); }
+
+  /* 3 text-only ceremony cards */
+  .ceremony-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .ceremony-card {
+    background: var(--midnight);
+    padding: 2.8rem 2.8rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+    border-top: 2px solid transparent;
+    transition: border-color 0.35s ease, background 0.35s ease;
+    position: relative;
+  }
+  .ceremony-card:hover {
+    border-top-color: var(--warm-accent);
+    background: #162130;
+  }
+  .ceremony-card-img {
+    width: 100%; aspect-ratio: 3/2;
+    object-fit: cover; display: block;
+    margin: -2.8rem -2.8rem 1.6rem -2.8rem;
+    width: calc(100% + 5.6rem);
+    transition: transform 6s ease;
+  }
+  .ceremony-card:hover .ceremony-card-img { transform: scale(1.04); }
+  .ceremony-card-img-wrap {
+    overflow: hidden;
+    margin: -2.8rem -2.8rem 1.6rem -2.8rem;
+  }
+  .ceremony-ghost-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; font-weight: 300; line-height: 1;
+    color: rgba(255,255,255,0.04);
+    margin-bottom: -0.8rem;
+    user-select: none;
+  }
+  .ceremony-date {
+    font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--warm-accent); display: block;
+  }
+  .ceremony-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 300; color: #fff; line-height: 1.1;
+  }
+  .ceremony-subtitle {
+    font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+  }
+  .ceremony-rule {
+    width: 28px; height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 0.4rem 0;
+  }
+  .ceremony-desc {
+    font-size: 0.84rem; line-height: 1.85;
+    color: rgba(255,255,255,0.42);
+  }
+
+  /* ── FULLBLEED ── */
+  .fullbleed-photo { width: 100%; height: 52vh; position: relative; overflow: hidden; }
+  .fullbleed-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
+  .fullbleed-photo:hover img { transform: scale(1.04); }
+  .fullbleed-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(17,24,32,0.5) 100%); }
+  .fullbleed-caption { position: absolute; bottom: 1.8rem; right: 2.2rem; font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+
+  /* ── WHY NEPAL ── */
+  #why-nepal {
+    position: relative; overflow: hidden;
+    min-height: 560px; display: flex; align-items: center;
+  }
+  .why-bg-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: center 40%;
+    display: block;
+  }
+  .why-gradient {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to right, rgba(17,24,32,0.94) 0%, rgba(17,24,32,0.75) 42%, rgba(17,24,32,0.18) 72%, transparent 100%);
+  }
+  .why-content {
+    position: relative; z-index: 2;
+    padding: 5rem 5rem;
+    max-width: 56%;
+    display: flex; flex-direction: column; gap: 1.1rem;
+  }
+  .why-eyebrow {
+    font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+    color: rgba(168,196,212,0.55);
+  }
+  .why-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    font-weight: 300; line-height: 1.06; color: #fff;
+  }
+  .why-heading em { font-style: italic; color: rgba(168,196,212,0.7); }
+  .why-p {
+    font-size: 0.88rem; line-height: 1.9;
+    color: rgba(255,255,255,0.56);
+  }
+  .why-rule {
+    width: 36px; height: 1px;
+    background: rgba(255,255,255,0.18);
+    margin: 0.1rem 0;
+  }
+  .why-closing {
+    margin-top: 0.2rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    font-size: 0.85rem; line-height: 1.88;
+    color: rgba(255,255,255,0.55);
+  }
+  .why-closing strong { color: rgba(168,196,212,0.88); font-weight: 400; }
+
+  /* ── PHOTO STRIP ── */
+  .photo-strip {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 4px;
+    background: var(--midnight);
+  }
+  .photo-strip-item { overflow: hidden; position: relative; }
+  .photo-strip-item img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    aspect-ratio: 4/3;
+    transition: transform 6s ease;
+  }
+  .photo-strip-item:hover img { transform: scale(1.05); }
+  .photo-strip-caption {
+    position: absolute; bottom: 0.9rem; right: 1rem;
+    font-size: 0.54rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .photo-strip-item:first-child img { aspect-ratio: 3/2; }
+
+  /* ── STAY TUNED ── */
+  #stay-tuned {
+    min-height: 32vh; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stay-bg { position: absolute; inset: 0; background: url('https://raw.githubusercontent.com/aroshi3/wedding-site/main/sarangkot.jpg') center 40%/cover no-repeat; }
+  .stay-overlay { position: absolute; inset: 0; background: rgba(17,24,32,0.76); }
+  .stay-content { position: relative; z-index: 2; text-align: center; padding: 2.5rem 2rem; max-width: 600px; }
+  .stay-eyebrow { font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(168,196,212,0.45); display: block; margin-bottom: 0.9rem; }
+  .stay-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300; color: #fff; line-height: 1; margin-bottom: 1.5rem;
+  }
+  .stay-heading em { font-style: italic; color: rgba(255,255,255,0.42); }
+  .stay-sub { font-size: 0.84rem; line-height: 1.95; color: rgba(255,255,255,0.48); max-width: 420px; margin: 0 auto; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--midnight); padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); }
+  .footer-names { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.32); letter-spacing: 0.12em; }
+  .footer-love { font-size: 0.56rem; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.14); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.28; }
+    50%       { opacity: 0.85; }
+  }
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.95s ease, transform 0.95s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    nav { padding: 1.1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 2rem 3.5rem; }
+    .hero-names { white-space: normal; }
+    #about { padding: 4rem 2rem; }
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-img-col { grid-template-columns: 1fr 1fr; }
+    .about-img { grid-column: span 2; border-radius: 999px; }
+    .photo-strip { grid-template-columns: 1fr; }
+    .photo-strip-item img { aspect-ratio: 16/9; }
+    #savedate { padding: 4rem 2rem 3rem; }
+    .ceremony-cards { grid-template-columns: 1fr; }
+    .ceremony-card { padding: 2rem 1.8rem; }
+    .why-content { max-width: 90%; padding: 4rem 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">Aroshi & Nab</a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#savedate">Details</a></li>
+    <li><a href="#stay-tuned">Stay Tuned</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <img
+    class="hero-bg-img"
+    src="https://raw.githubusercontent.com/aroshi3/wedding-site/7659eac6950ad548a3bf5491f545dd525e6dd8dd/raimond-klavins-JqT2Wp5S0Dk-unsplash.jpg"
+    alt="Nepal mountain landscape"
+  >
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Save the Date · March 2027</p>
+    <h1 class="hero-names">Aroshi <em>&amp;</em> Nab</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">When</p>
+        <p class="hero-meta-value">March 9 – 11, 2027</p>
+      </div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">Where</p>
+        <p class="hero-meta-value">Kathmandu, Nepal</p>
+      </div>
+    </div>
+  </div>
+  <span class="hero-credit">Kathmandu, Nepal</span>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="about">
+  <div class="about-inner reveal">
+    <img
+        class="about-img"
+        src="https://raw.githubusercontent.com/aroshi3/wedding-site/b64eef668482e4756fb8bdacb30b41a59640e3aa/CF1B9568-AD07-4AB8-BA1C-E78E7FE29E41_1_105_c.jpeg"
+        alt="Aroshi and Nab"
+      >
+    <div class="about-content">
+      <span class="about-eyebrow">Aroshi & Nab</span>
+      <h2 class="about-heading">We're getting married<br><em>in Nepal</em></h2>
+      <div class="about-rule"></div>
+      <p class="about-body">A wedding in Nepal helps us celebrate with close family while weaving both Hindu and Buddhist cultures and traditions in two ceremonies.</p>
+      <div class="about-callout">
+        <p>We would love for you to join us. We can help arrange accommodation and trip itineraries for anyone wanting to make the journey.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DETAILS + CEREMONIES ═══════════════ -->
+<section id="savedate">
+
+  <div class="savedate-header reveal">
+    <span class="savedate-eyebrow">The Celebrations</span>
+    <h2 class="savedate-heading">Three days, <em>two traditions</em></h2>
+    <div class="savedate-meta">
+      <div class="savedate-meta-item">
+        <span class="savedate-meta-label">When</span>
+        <span class="savedate-meta-val">March 9 – 11, 2027</span>
+      </div>
+      <div class="savedate-meta-div"></div>
+      <div class="savedate-meta-item">
+        <span class="savedate-meta-label">Where</span>
+        <span class="savedate-meta-val">Kathmandu, Nepal</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ceremony-cards reveal">
+
+    <div class="ceremony-card">
+      <p class="ceremony-ghost-num">01</p>
+      <span class="ceremony-date">March 9 · Morning</span>
+      <h3 class="ceremony-title">Hindu Wedding</h3>
+      <p class="ceremony-subtitle">Vivah Sanskar</p>
+      <div class="ceremony-rule"></div>
+      <p class="ceremony-desc">Rooted in Vedic tradition, the ceremony centres on the sacred flame — agni — as witness to the vows. Expect vibrant colour, Sanskrit prayers, and rituals passed down for thousands of years.</p>
+    </div>
+
+    <div class="ceremony-card">
+      <p class="ceremony-ghost-num">02</p>
+      <span class="ceremony-date">March 10 · Morning</span>
+      <h3 class="ceremony-title">Buddhist Wedding</h3>
+      <p class="ceremony-subtitle">Poruwa Ceremony</p>
+      <div class="ceremony-rule"></div>
+      <p class="ceremony-desc">A traditional Sinhalese Poruwa ceremony, performed on a beautifully decorated wooden platform. The ritual includes Ashtaka chants, the exchange of betel leaves, the tying of pinky fingers, and the lighting of an oil lamp — each gesture a blessing for unity and prosperity.</p>
+    </div>
+
+    <div class="ceremony-card">
+      <p class="ceremony-ghost-num">03</p>
+      <span class="ceremony-date">March 11 · Evening</span>
+      <h3 class="ceremony-title">The Reception</h3>
+      <p class="ceremony-subtitle">Celebration Evening</p>
+      <div class="ceremony-rule"></div>
+      <p class="ceremony-desc">Family from across South Asia, the UK, Canada, and beyond — great food, dancing, toasts, and the kind of night nobody wants to end.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ PHOTO STRIP ═══════════════ -->
+<div class="photo-strip">
+  <div class="photo-strip-item">
+    <img src="https://raw.githubusercontent.com/aroshi3/wedding-site/main/raimond-klavins-zjrc98oQ3PA-unsplash.jpg" alt="Bhaktapur, Nepal" loading="lazy">
+    <span class="photo-strip-caption">Bhaktapur, Nepal</span>
+  </div>
+  <div class="photo-strip-item">
+    <img src="https://raw.githubusercontent.com/aroshi3/wedding-site/main/peace-pagoda.jpg" alt="World Peace Pagoda, Nepal" loading="lazy">
+    <span class="photo-strip-caption">World Peace Pagoda</span>
+  </div>
+  <div class="photo-strip-item">
+    <img src="https://raw.githubusercontent.com/aroshi3/wedding-site/main/sky-gliding.jpg" alt="Paragliding over Pokhara" loading="lazy">
+    <span class="photo-strip-caption">Pokhara Valley</span>
+  </div>
+</div>
+
+<!-- ═══════════════ STAY TUNED ═══════════════ -->
+<section id="stay-tuned">
+  <div class="stay-bg"></div>
+  <div class="stay-overlay"></div>
+  <div class="stay-content reveal">
+    <span class="stay-eyebrow">More to Come</span>
+    <h2 class="stay-heading">Stay<br><em>Tuned</em></h2>
+    <p class="stay-sub">We're still putting the finishing touches together. More details coming soon!</p>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-names">Aroshi & Nab · Nepal 2027</span>
+  <span class="footer-love">With love, from the Himalayas</span>
+</footer>
+
+<script>
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  reveals.forEach(r => io.observe(r));
+</script>
+</body>
+</html>

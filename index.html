@@ -554,8 +554,16 @@ footer {
   .hi-header { padding: 0 5vw 1rem; }
   .hi-title { font-size: clamp(2rem, 7vw, 3rem); }
   .hi-sub { font-size: 0.82rem; margin-bottom: 2rem; }
-  .hi-tabs { width: calc(100% - 10vw); margin-left: 5vw; margin-right: 5vw; }
+
+  /* Hero scroll — hide on mobile to prevent overlap with details */
+  .hero-scroll { display: none; }
+
+  /* Tabs */
+  .hi-tabs { width: calc(100% - 10vw); margin-left: 5vw; margin-right: 5vw; margin-bottom: 2rem; }
   .hi-tab { padding: 0.85rem 0; flex: 1; text-align: center; font-size: 0.55rem; letter-spacing: 0.25em; }
+  /* Reinforce active state so it's never overridden on mobile */
+  .hi-tab.active { background: var(--ink) !important; color: var(--lavender) !important; }
+
   .hi-scroll-wrap { padding: 0 5vw 2rem; }
   .hi-card { width: 78vw; }
   .hi-card-title p { font-size: 0.95rem; }
@@ -587,6 +595,7 @@ footer {
   .hero-eyebrow { font-size: 0.55rem; letter-spacing: 0.28em; }
   .hi-card { width: 85vw; }
   .hi-tab { font-size: 0.5rem; letter-spacing: 0.18em; padding: 0.8rem 0; }
+  .hi-tab.active { background: var(--ink) !important; color: var(--lavender) !important; }
 }
 </style>
 </head>
@@ -708,9 +717,9 @@ footer {
   </div>
 
   <div class="hi-tabs">
-    <button class="hi-tab active" onclick="switchTab(this,'culture')">Culture</button>
-    <button class="hi-tab" onclick="switchTab(this,'adventure')">Adventure</button>
-    <button class="hi-tab" onclick="switchTab(this,'hiking')">Hiking</button>
+    <button class="hi-tab active" data-panel="culture">Culture</button>
+    <button class="hi-tab" data-panel="adventure">Adventure</button>
+    <button class="hi-tab" data-panel="hiking">Hiking</button>
   </div>
 
   <!-- ── CULTURE ── -->
@@ -1037,14 +1046,18 @@ footer {
   }, { threshold: 0.1 });
   reveals.forEach(r => io.observe(r));
 
-  function switchTab(btn, id) {
-    document.querySelectorAll('.hi-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.hi-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-' + id).classList.add('active');
-  }
+  // Tab switching — data-attribute driven, reliable on all mobile browsers
+  document.querySelectorAll('.hi-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const id = this.getAttribute('data-panel');
+      document.querySelectorAll('.hi-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.hi-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('panel-' + id).classList.add('active');
+    });
+  });
 
-  // Mobile touch: tap card to reveal description, tap again to hide
+  // Mobile: tap card to reveal description, tap again to dismiss
   if ('ontouchstart' in window) {
     document.querySelectorAll('.hi-card').forEach(card => {
       card.addEventListener('click', () => {
